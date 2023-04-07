@@ -20,9 +20,6 @@
       <string>Display</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="qSlicerMixedRealityFooBarWidget" name="FooBar" native="true"/>
-      </item>
      </layout>
     </widget>
    </item>
@@ -52,12 +49,6 @@
    <class>ctkCollapsibleButton</class>
    <extends>QWidget</extends>
    <header>ctkCollapsibleButton.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>qSlicerMixedRealityFooBarWidget</class>
-   <extends>QWidget</extends>
-   <header>qSlicerMixedRealityFooBarWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
