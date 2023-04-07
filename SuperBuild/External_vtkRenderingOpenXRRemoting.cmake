@@ -80,6 +80,9 @@ if(NOT DEFINED ${proj}_DIR AND NOT ${SUPERBUILD_TOPLEVEL_PROJECT}_USE_SYSTEM_${p
       # Required to find vtkRenderingOpenXRRemoting
       -DvtkRenderingVR_DIR:PATH=${vtkRenderingVR_DIR}
       -DvtkRenderingOpenXR_DIR:PATH=${vtkRenderingOpenXR_DIR}
+      # Required to find OpenXRRemoting
+      -DOpenXRRemoting_BIN_DIR:PATH=${OpenXRRemoting_BIN_DIR}
+      -DOpenXRRemoting_INCLUDE_DIR:PATH=${OpenXRRemoting_INCLUDE_DIR}
       ${EXTERNAL_PROJECT_OPTIONAL_CMAKE_CACHE_ARGS}
     DEPENDS
       ${${proj}_DEPENDS}
