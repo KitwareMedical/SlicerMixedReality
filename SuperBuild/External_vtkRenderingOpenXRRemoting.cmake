@@ -7,6 +7,7 @@ set(proj vtkRenderingOpenXRRemoting)
 # Set dependency list
 set(${proj}_DEPENDS
   vtkRenderingOpenXR
+  OpenXRRemoting
   )
 
 # Include dependent projects if any
