@@ -108,6 +108,12 @@ public:
   // Get whether dolly (flying in the scene with the TrackPad) is enabled
 //  Q_INVOKABLE bool isDolly3DEnabled();
 
+  ///@{
+  /// Path where the action manifest .json files are located.
+  void setActionManifestPath(const QString& path);
+  QString actionManifestPath() const;
+  ///@}
+
 public slots:
   /// Set the current \a viewNode to observe
   void setMRMLMixedRealityViewNode(vtkMRMLMixedRealityViewNode* newViewNode);
