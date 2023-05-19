@@ -59,6 +59,26 @@ public:
   /// Retrieves the default XR view node from the scene. Creates it if does not exist.
   vtkMRMLMixedRealityViewNode* GetDefaultMixedRealityViewNode();
 
+  /// @{
+  /// Connect/disconnect to headset.
+  /// Adds mixed reality view node if not added yet.
+  void SetMixedRealityConnected(bool connect, const std::string& playerIPAddress);
+  bool GetMixedRealityConnected();
+  /// }@
+
+  /// @{
+  /// Enable rendering updates in headset.
+  /// Connects to device if not yet connected.
+  void SetMixedRealityActive(bool activate);
+  bool GetMixedRealityActive();
+  /// }@
+
+  /// Set the first visible 3D view as reference view for
+  /// mixed reality view.
+  /// If a reference view has been already set then the
+  /// method has no effect.
+  void SetDefaultReferenceView();
+
 protected:
   vtkSlicerMixedRealityLogic();
   ~vtkSlicerMixedRealityLogic() override;

@@ -134,6 +134,39 @@ vtkMRMLMixedRealityViewNode* vtkSlicerMixedRealityLogic::GetMixedRealityViewNode
 }
 
 //---------------------------------------------------------------------------
+void vtkSlicerMixedRealityLogic::SetDefaultReferenceView()
+{
+  if (!this->ActiveViewNode)
+  {
+    return;
+  }
+  if (this->ActiveViewNode->GetReferenceViewNode() != nullptr)
+  {
+    // Reference view is already set, there is nothing to do
+    return;
+  }
+  if (!this->GetMRMLScene())
+  {
+    return;
+  }
+  vtkSmartPointer<vtkCollection> nodes = vtkSmartPointer<vtkCollection>::Take(
+      this->GetMRMLScene()->GetNodesByClass("vtkMRMLViewNode"));
+  vtkMRMLViewNode* viewNode = nullptr;
+  vtkCollectionSimpleIterator it;
+  for (nodes->InitTraversal(it); (viewNode = vtkMRMLViewNode::SafeDownCast(
+                                    nodes->GetNextItemAsObject(it)));)
+  {
+    if (viewNode->GetVisibility() && viewNode->IsMappedInLayout())
+    {
+      // Found a view node displayed in current layout, use this
+      break;
+    }
+  }
+  // Either use a view node displayed in current layout or just any 3D view node found in the scene
+  this->ActiveViewNode->SetAndObserveReferenceViewNode(viewNode);
+}
+
+//---------------------------------------------------------------------------
 vtkMRMLMixedRealityViewNode* vtkSlicerMixedRealityLogic::GetDefaultMixedRealityViewNode()
 {
   vtkMRMLScene* scene = this->GetMRMLScene();
@@ -206,4 +239,103 @@ void vtkSlicerMixedRealityLogic::ProcessMRMLNodesEvents(vtkObject* caller, unsig
   {
     this->Modified();
   }
+}
+
+//-----------------------------------------------------------------------------
+void vtkSlicerMixedRealityLogic::SetMixedRealityConnected(bool connect, const std::string& playerIPAddress)
+{
+  vtkMRMLScene* scene = this->GetMRMLScene();
+  if (!scene)
+  {
+    vtkErrorMacro("SetMixedRealityConnected: Invalid MRML scene");
+    return;
+  }
+
+  if (connect)
+  {
+    if (!this->ActiveViewNode)
+    {
+      // Check if there is a MixedReality view node in the scene, in case the scene has been loaded
+      // from file and VR view properties has been changed
+      if (scene->GetNumberOfNodesByClass("vtkMRMLMixedRealityViewNode") > 0)
+      {
+        // Use the first one if any found
+        this->SetActiveViewNode(
+          vtkMRMLMixedRealityViewNode::SafeDownCast(scene->GetNthNodeByClass(0, "vtkMRMLMixedRealityViewNode")));
+      }
+      else
+      {
+        vtkMRMLMixedRealityViewNode* newViewNode = this->AddMixedRealityViewNode();
+        newViewNode->SetPlayerIPAddress(playerIPAddress);
+        this->SetActiveViewNode(newViewNode);
+      }
+    }
+    if (this->ActiveViewNode)
+    {
+      this->ActiveViewNode->SetVisibility(1);
+    }
+    else
+    {
+      vtkErrorMacro("Failed to create virtual reality view node");
+    }
+  }
+  else
+  {
+    if (this->ActiveViewNode)
+    {
+      this->ActiveViewNode->SetVisibility(0);
+    }
+  }
+}
+
+//-----------------------------------------------------------------------------
+bool vtkSlicerMixedRealityLogic::GetMixedRealityConnected()
+{
+  if (!this->ActiveViewNode)
+  {
+    return false;
+  }
+  return (this->ActiveViewNode->GetVisibility() != 0);
+}
+
+//-----------------------------------------------------------------------------
+void vtkSlicerMixedRealityLogic::SetMixedRealityActive(bool activate)
+{
+  if (activate)
+  {
+    if (this->GetMixedRealityConnected()
+        && this->GetMixedRealityViewNode()
+        /* && this->GetMixedRealityViewNode()->HasError() */)
+    {
+      // If it is connected already but there is an error then disconnect first then reconnect
+      // as the error may be resolved by reconnecting.
+      this->SetMixedRealityConnected(false, this->ActiveViewNode->GetPlayerIPAddress());
+    }
+    this->SetMixedRealityConnected(true, this->ActiveViewNode->GetPlayerIPAddress());
+    if (this->ActiveViewNode)
+    {
+      this->ActiveViewNode->SetActive(1);
+    }
+    else
+    {
+      vtkErrorMacro("vtkSlicerMixedRealityLogic::SetMixedRealityActive failed: view node is not available");
+    }
+  }
+  else
+  {
+    if (this->ActiveViewNode != nullptr)
+    {
+      this->ActiveViewNode->SetActive(0);
+    }
+  }
+}
+
+//-----------------------------------------------------------------------------
+bool vtkSlicerMixedRealityLogic::GetMixedRealityActive()
+{
+  if (!this->ActiveViewNode)
+  {
+    return false;
+  }
+  return (this->ActiveViewNode->GetVisibility() != 0 && this->ActiveViewNode->GetActive() != 0);
 }

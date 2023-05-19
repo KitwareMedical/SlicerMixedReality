@@ -44,6 +44,8 @@ public:
   /// Adds Mixed Reality view widget
   void addViewWidget();
 
+  vtkSlicerMixedRealityLogic* logic();
+
   qMRMLMixedRealityView* MixedRealityViewWidget{nullptr};
 };
 
@@ -107,6 +109,13 @@ void qSlicerMixedRealityModulePrivate::addViewWidget()
   }
 
   qDebug() << "actionManifestPath:" << this->MixedRealityViewWidget->actionManifestPath();
+}
+
+//-----------------------------------------------------------------------------
+vtkSlicerMixedRealityLogic* qSlicerMixedRealityModulePrivate::logic()
+{
+  Q_Q(qSlicerMixedRealityModule);
+  return vtkSlicerMixedRealityLogic::SafeDownCast(q->logic());
 }
 
 //-----------------------------------------------------------------------------
@@ -194,6 +203,27 @@ void qSlicerMixedRealityModule::setMRMLScene(vtkMRMLScene* scene)
 //  {
 //    defaultViewNode->SetUseDepthPeeling(settings.value("UseDepthPeeling").toBool());
 //  }
+}
+
+// --------------------------------------------------------------------------
+void qSlicerMixedRealityModule::onViewNodeModified()
+{
+  Q_D(qSlicerMixedRealityModule);
+  vtkMRMLMixedRealityViewNode* xrViewNode = d->logic()->GetMixedRealityViewNode();
+
+  // Update view node in view widget
+  if (d->MixedRealityViewWidget != nullptr)
+  {
+    vtkMRMLMixedRealityViewNode* oldXrViewNode = d->MixedRealityViewWidget->mrmlMixedRealityViewNode();
+    if (oldXrViewNode != xrViewNode)
+    {
+      d->logic()->SetDefaultReferenceView();
+    }
+    d->MixedRealityViewWidget->setMRMLMixedRealityViewNode(xrViewNode);
+  }
+
+  // Update toolbar
+  //d->updateToolBar();
 }
 
 //-----------------------------------------------------------------------------
