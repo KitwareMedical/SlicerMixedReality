@@ -125,6 +125,8 @@ void qMRMLMixedRealityViewPrivate::createRenderWindow()
 {
   Q_Q(qMRMLMixedRealityView);
 
+  qDebug() << Q_FUNC_INFO << "createRenderWindow";
+
   this->LastViewUpdateTime = vtkSmartPointer<vtkTimerLog>::New();
   this->LastViewUpdateTime->StartTimer();
   this->LastViewUpdateTime->StopTimer();
@@ -276,6 +278,7 @@ void qMRMLMixedRealityViewPrivate::destroyRenderWindow()
 void qMRMLMixedRealityViewPrivate::updateWidgetFromMRML()
 {
   Q_Q(qMRMLMixedRealityView);
+  qDebug() << Q_FUNC_INFO << "updateWidgetFromMRML";
   if (!this->MRMLMixedRealityViewNode || !this->MRMLMixedRealityViewNode->GetVisibility())
   {
     if (this->RenderWindow != nullptr)
@@ -687,6 +690,7 @@ void qMRMLMixedRealityView::addDisplayableManager(const QString& displayableMana
 void qMRMLMixedRealityView::setMRMLMixedRealityViewNode(vtkMRMLMixedRealityViewNode* newViewNode)
 {
   Q_D(qMRMLMixedRealityView);
+  qDebug() << Q_FUNC_INFO << "setMRMLMixedRealityViewNode";
   if (d->MRMLMixedRealityViewNode == newViewNode)
   {
     return;

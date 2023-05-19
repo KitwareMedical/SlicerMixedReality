@@ -211,6 +211,8 @@ void qSlicerMixedRealityModule::onViewNodeModified()
   Q_D(qSlicerMixedRealityModule);
   vtkMRMLMixedRealityViewNode* xrViewNode = d->logic()->GetMixedRealityViewNode();
 
+  qDebug() << Q_FUNC_INFO << "onViewNodeModified" << xrViewNode;
+
   // Update view node in view widget
   if (d->MixedRealityViewWidget != nullptr)
   {
