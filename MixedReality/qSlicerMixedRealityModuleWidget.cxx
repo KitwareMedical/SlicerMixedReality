@@ -64,6 +64,8 @@ void qSlicerMixedRealityModuleWidget::setup()
   Q_D(qSlicerMixedRealityModuleWidget);
   d->setupUi(this);
   this->Superclass::setup();
+
+  connect(d->PlayerIPAddressLineEdit, SIGNAL(textChanged(QString)), this, SLOT(setPlayerIPAddress(QString)));
 }
 
 //--------------------------------------------------------------------------
@@ -73,6 +75,10 @@ void qSlicerMixedRealityModuleWidget::updateWidgetFromMRML()
 
   vtkSlicerMixedRealityLogic* xrLogic = vtkSlicerMixedRealityLogic::SafeDownCast(this->logic());
   vtkMRMLMixedRealityViewNode* xrViewNode = xrLogic->GetMixedRealityViewNode();
+
+  bool wasBlocked = d->PlayerIPAddressLineEdit->blockSignals(true);
+  d->PlayerIPAddressLineEdit->setText(QString::fromStdString(xrViewNode->GetPlayerIPAddress()));
+  d->PlayerIPAddressLineEdit->blockSignals(wasBlocked);
 }
 
 //-----------------------------------------------------------------------------
@@ -80,4 +86,8 @@ void qSlicerMixedRealityModuleWidget::setPlayerIPAddress(const QString& value)
 {
   vtkSlicerMixedRealityLogic* xrLogic = vtkSlicerMixedRealityLogic::SafeDownCast(this->logic());
   vtkMRMLMixedRealityViewNode* xrViewNode = xrLogic->GetMixedRealityViewNode();
+  if (xrViewNode)
+  {
+    xrViewNode->SetPlayerIPAddress(value.toStdString());
+  }
 }

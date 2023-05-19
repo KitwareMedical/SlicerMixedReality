@@ -53,7 +53,7 @@ void vtkMRMLMixedRealityViewNode::WriteXML(ostream& of, int nIndent)
   this->Superclass::WriteXML(of, nIndent);
 
   vtkMRMLWriteXMLBeginMacro(of);
-  (void)(xmlWriteOutputStream); // unused
+  vtkMRMLWriteXMLStdStringMacro(playerIPAddress, PlayerIPAddress);
   vtkMRMLWriteXMLEndMacro();
 }
 
@@ -65,7 +65,7 @@ void vtkMRMLMixedRealityViewNode::ReadXMLAttributes(const char** atts)
   this->Superclass::ReadXMLAttributes(atts);
 
   vtkMRMLReadXMLBeginMacro(atts);
-  (void)(xmlReadAttName); // unused
+  vtkMRMLReadXMLStdStringMacro(playerIPAddress, PlayerIPAddress);
   vtkMRMLReadXMLEndMacro();
 
   this->EndModify(disabledModify);
@@ -81,6 +81,7 @@ void vtkMRMLMixedRealityViewNode::Copy(vtkMRMLNode* anode)
   this->Superclass::Copy(anode);
 
   vtkMRMLCopyBeginMacro(anode);
+  vtkMRMLCopyStringMacro(PlayerIPAddress);
   vtkMRMLCopyEndMacro();
 
   this->EndModify(disabledModify);
@@ -92,8 +93,7 @@ void vtkMRMLMixedRealityViewNode::PrintSelf(ostream& os, vtkIndent indent)
   this->Superclass::PrintSelf(os, indent);
 
   vtkMRMLPrintBeginMacro(os, indent);
-  (void)(printOutputStream); // unused
-  (void)(printOutputIndent); // unused
+  vtkMRMLPrintStdStringMacro(PlayerIPAddress);
   vtkMRMLPrintEndMacro();
 }
 

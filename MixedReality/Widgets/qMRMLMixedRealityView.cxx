@@ -149,6 +149,8 @@ void qMRMLMixedRealityViewPrivate::createRenderWindow()
 //  this->RenderWindow->SetMultiSamples(0);
 //  this->RenderWindow->AddRenderer(this->Renderer);
   this->RenderWindow->SetInteractor(this->Interactor);
+
+  this->RenderWindow->SetRemotingIPAddress(q->mrmlMixedRealityViewNode()->GetPlayerIPAddress().c_str());
   // Set default 10x magnification (conversion: PhysicalScale = 1000 / Magnification)
 //  this->RenderWindow->SetPhysicalScale(100.0);
   // Observe VR render window event

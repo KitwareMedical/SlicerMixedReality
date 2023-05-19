@@ -71,11 +71,17 @@ public:
   /// \sa GetReferenceViewNode
   bool SetAndObserveReferenceViewNode(vtkMRMLViewNode* node);
 
+  //void SetText(const std::string &text);
+  vtkSetMacro(PlayerIPAddress, const std::string);
+  vtkGetMacro(PlayerIPAddress, std::string);
+
 protected:
   vtkMRMLMixedRealityViewNode();
   ~vtkMRMLMixedRealityViewNode() override;
   vtkMRMLMixedRealityViewNode(const vtkMRMLMixedRealityViewNode&);
   void operator=(const vtkMRMLMixedRealityViewNode&);
+
+  std::string PlayerIPAddress;
 
   static const char* ReferenceViewNodeReferenceRole;
 };
