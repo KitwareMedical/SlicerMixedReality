@@ -41,6 +41,8 @@ public:
 
 public slots:
 
+protected slots:
+  void updateWidgetFromMRML();
 
 protected:
   QScopedPointer<qSlicerMixedRealityModuleWidgetPrivate> d_ptr;
