@@ -137,7 +137,7 @@ void qMRMLMixedRealityViewPrivate::createRenderWindow()
 //  this->RenderWindow = vtkSmartPointer<vtkOpenVRRenderWindow>::New();
 //  this->Renderer = vtkSmartPointer<vtkOpenVRRenderer>::New();
 //  this->Interactor = vtkSmartPointer<vtkMixedRealityViewInteractor>::New();
-  //this->Interactor = vtkSmartPointer<vtkOpenVRRenderWindowInteractor>::New(); //TODO: For debugging the original interactor
+  this->Interactor = vtkSmartPointer<vtkOpenXRRenderWindowInteractor>::New(); //TODO: For debugging the original interactor
 //  this->InteractorStyle = vtkSmartPointer<vtkMixedRealityViewInteractorStyle>::New();
   //this->InteractorStyle = vtkSmartPointer<vtkOpenVRInteractorStyle>::New(); //TODO: For debugging the original interactor
 //  this->Interactor->SetInteractorStyle(this->InteractorStyle);
@@ -148,7 +148,7 @@ void qMRMLMixedRealityViewPrivate::createRenderWindow()
 
 //  this->RenderWindow->SetMultiSamples(0);
 //  this->RenderWindow->AddRenderer(this->Renderer);
-//  this->RenderWindow->SetInteractor(this->Interactor);
+  this->RenderWindow->SetInteractor(this->Interactor);
   // Set default 10x magnification (conversion: PhysicalScale = 1000 / Magnification)
 //  this->RenderWindow->SetPhysicalScale(100.0);
   // Observe VR render window event
@@ -282,18 +282,18 @@ void qMRMLMixedRealityViewPrivate::updateWidgetFromMRML()
     return;
   }
 
-//  if (!this->RenderWindow)
-//  {
-//    QApplication::setOverrideCursor(QCursor(Qt::BusyCursor));
-//    this->createRenderWindow();
-//    QApplication::restoreOverrideCursor();
+  if (!this->RenderWindow)
+  {
+    QApplication::setOverrideCursor(QCursor(Qt::BusyCursor));
+    this->createRenderWindow();
+    QApplication::restoreOverrideCursor();
 //    if (!q->isHardwareConnected())
 //    {
 //      this->MRMLMixedRealityViewNode->SetError("Connection failed");
 //      return;
 //    }
 //    this->MRMLMixedRealityViewNode->ClearError();
-//  }
+  }
 
   if (this->DisplayableManagerGroup->GetMRMLDisplayableNode() != this->MRMLMixedRealityViewNode.GetPointer())
   {

@@ -23,6 +23,10 @@
 #include "qSlicerMixedRealityModuleWidget.h"
 #include "ui_qSlicerMixedRealityModuleWidget.h"
 
+// MixedReality includes
+#include "vtkSlicerMixedRealityLogic.h"
+#include "vtkMRMLMixedRealityViewNode.h"
+
 //-----------------------------------------------------------------------------
 /// \ingroup Slicer_QtModules_ExtensionTemplate
 class qSlicerMixedRealityModuleWidgetPrivate: public Ui_qSlicerMixedRealityModuleWidget
@@ -60,4 +64,20 @@ void qSlicerMixedRealityModuleWidget::setup()
   Q_D(qSlicerMixedRealityModuleWidget);
   d->setupUi(this);
   this->Superclass::setup();
+}
+
+//--------------------------------------------------------------------------
+void qSlicerMixedRealityModuleWidget::updateWidgetFromMRML()
+{
+  Q_D(qSlicerMixedRealityModuleWidget);
+
+  vtkSlicerMixedRealityLogic* xrLogic = vtkSlicerMixedRealityLogic::SafeDownCast(this->logic());
+  vtkMRMLMixedRealityViewNode* xrViewNode = xrLogic->GetMixedRealityViewNode();
+}
+
+//-----------------------------------------------------------------------------
+void qSlicerMixedRealityModuleWidget::setPlayerIPAddress(const QString& value)
+{
+  vtkSlicerMixedRealityLogic* xrLogic = vtkSlicerMixedRealityLogic::SafeDownCast(this->logic());
+  vtkMRMLMixedRealityViewNode* xrViewNode = xrLogic->GetMixedRealityViewNode();
 }

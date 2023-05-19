@@ -19,19 +19,23 @@
 #ifndef __qSlicerMixedRealityModule_h
 #define __qSlicerMixedRealityModule_h
 
+// CTK includes
+#include <ctkVTKObject.h>
+
 // Slicer includes
 #include "qSlicerLoadableModule.h"
 
 #include "qSlicerMixedRealityModuleExport.h"
 
 class qSlicerMixedRealityModulePrivate;
+class qMRMLMixedRealityView;
 
-/// \ingroup Slicer_QtModules_ExtensionTemplate
 class Q_SLICER_QTMODULES_MIXEDREALITY_EXPORT
 qSlicerMixedRealityModule
   : public qSlicerLoadableModule
 {
   Q_OBJECT
+  QVTK_OBJECT
   Q_PLUGIN_METADATA(IID "org.slicer.modules.loadable.qSlicerLoadableModule/1.0");
   Q_INTERFACES(qSlicerLoadableModule);
 
@@ -51,6 +55,21 @@ public:
 
   QStringList categories()const override;
   QStringList dependencies() const override;
+
+  Q_INVOKABLE virtual qMRMLMixedRealityView* viewWidget();
+
+public slots:
+  //void enableMixedReality(bool);
+//  void updateViewFromReferenceViewCamera();
+//  void switchToMixedRealityModule();
+//  void optimizeSceneForMixedReality();
+
+  /// Set MRML scene for the module. Updates the default view settings based on
+  /// the application settings.
+  void setMRMLScene(vtkMRMLScene* scene) override;
+
+protected slots:
+  void onViewNodeModified();
 
 protected:
 

@@ -49,7 +49,7 @@ class vtkOpenXRRenderWindowInteractor;
 /// VR hardware connection state is controlled by associated view node's properties:
 /// - Visible: connection is made with OpenVR.
 /// - Active: scene is rendered in the VR headset.
-/// \sa qMRMLVRWidget, qMRMLVRViewControllerWidget, qMRMLSliceView
+/// \sa vtkMRMLMixedRealityViewNode
 class Q_SLICER_MODULE_MIXEDREALITY_WIDGETS_EXPORT qMRMLMixedRealityView : public QWidget
 {
   Q_OBJECT

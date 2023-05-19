@@ -35,6 +35,7 @@
 
 #include "vtkSlicerMixedRealityModuleLogicExport.h"
 
+class vtkMRMLMixedRealityViewNode;
 
 /// \ingroup Slicer_QtModules_ExtensionTemplate
 class VTK_SLICER_MIXEDREALITY_MODULE_LOGIC_EXPORT vtkSlicerMixedRealityLogic :
@@ -46,9 +47,23 @@ public:
   vtkTypeMacro(vtkSlicerMixedRealityLogic, vtkSlicerModuleLogic);
   void PrintSelf(ostream& os, vtkIndent indent) override;
 
+  /// Creates a singleton mixed reality view node and adds it to the scene.
+  /// If there is a mixed reality view node in the scene already then it just returns that.
+  /// If current view node is created, deleted, or modified then a Modified() event is invoked
+  /// for this logic class, to make it easy for modules to detect view changes.
+  vtkMRMLMixedRealityViewNode* AddMixedRealityViewNode();
+
+  /// Get active singleton mixed reality node
+  vtkMRMLMixedRealityViewNode* GetMixedRealityViewNode();
+
+  /// Retrieves the default XR view node from the scene. Creates it if does not exist.
+  vtkMRMLMixedRealityViewNode* GetDefaultMixedRealityViewNode();
+
 protected:
   vtkSlicerMixedRealityLogic();
   ~vtkSlicerMixedRealityLogic() override;
+
+  void SetActiveViewNode(vtkMRMLMixedRealityViewNode* xrViewNode);
 
   void SetMRMLSceneInternal(vtkMRMLScene* newScene) override;
   /// Register MRML Node classes to Scene. Gets called automatically when the MRMLScene is attached to this logic class.
@@ -56,6 +71,13 @@ protected:
   void UpdateFromMRMLScene() override;
   void OnMRMLSceneNodeAdded(vtkMRMLNode* node) override;
   void OnMRMLSceneNodeRemoved(vtkMRMLNode* node) override;
+  void OnMRMLSceneEndImport() override;
+  void ProcessMRMLNodesEvents(vtkObject* caller, unsigned long event, void* callData) override;
+
+protected:
+  /// Active MR view node
+  vtkMRMLMixedRealityViewNode* ActiveViewNode{nullptr};
+
 private:
 
   vtkSlicerMixedRealityLogic(const vtkSlicerMixedRealityLogic&); // Not implemented

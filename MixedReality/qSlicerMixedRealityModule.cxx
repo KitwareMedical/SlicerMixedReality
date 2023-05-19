@@ -16,27 +16,62 @@
 
 ==============================================================================*/
 
+// Qt includes
+#include <QDebug>
+
 // MixedReality Logic includes
 #include <vtkSlicerMixedRealityLogic.h>
 
 // MixedReality includes
 #include "qSlicerMixedRealityModule.h"
 #include "qSlicerMixedRealityModuleWidget.h"
+#include "qMRMLMixedRealityView.h"
 
 //-----------------------------------------------------------------------------
 /// \ingroup Slicer_QtModules_ExtensionTemplate
 class qSlicerMixedRealityModulePrivate
 {
+  Q_DECLARE_PUBLIC(qSlicerMixedRealityModule);
+protected:
+  qSlicerMixedRealityModule* const q_ptr;
 public:
-  qSlicerMixedRealityModulePrivate();
+  qSlicerMixedRealityModulePrivate(qSlicerMixedRealityModule& object);
+  ~qSlicerMixedRealityModulePrivate();
+
+  /// Adds Mixed Reality view widget
+  void addViewWidget();
+
+  qMRMLMixedRealityView* MixedRealityViewWidget{nullptr};
 };
 
 //-----------------------------------------------------------------------------
 // qSlicerMixedRealityModulePrivate methods
 
 //-----------------------------------------------------------------------------
-qSlicerMixedRealityModulePrivate::qSlicerMixedRealityModulePrivate()
+qSlicerMixedRealityModulePrivate::qSlicerMixedRealityModulePrivate(qSlicerMixedRealityModule& object)
+  : q_ptr(&object)
 {
+}
+
+//-----------------------------------------------------------------------------
+qSlicerMixedRealityModulePrivate::~qSlicerMixedRealityModulePrivate()
+{
+  delete this->MixedRealityViewWidget;
+  this->MixedRealityViewWidget = nullptr;
+}
+
+//-----------------------------------------------------------------------------
+void qSlicerMixedRealityModulePrivate::addViewWidget()
+{
+  Q_Q(qSlicerMixedRealityModule);
+
+  if (this->MixedRealityViewWidget != nullptr)
+  {
+    return;
+  }
+
+  this->MixedRealityViewWidget = new qMRMLMixedRealityView();
+  this->MixedRealityViewWidget->setObjectName(QString("MixedRealityViewWidget"));
 }
 
 //-----------------------------------------------------------------------------
@@ -45,7 +80,7 @@ qSlicerMixedRealityModulePrivate::qSlicerMixedRealityModulePrivate()
 //-----------------------------------------------------------------------------
 qSlicerMixedRealityModule::qSlicerMixedRealityModule(QObject* _parent)
   : Superclass(_parent)
-  , d_ptr(new qSlicerMixedRealityModulePrivate)
+  , d_ptr(new qSlicerMixedRealityModulePrivate(*this))
 {
 }
 
@@ -70,7 +105,8 @@ QString qSlicerMixedRealityModule::acknowledgementText() const
 QStringList qSlicerMixedRealityModule::contributors() const
 {
   QStringList moduleContributors;
-  moduleContributors << QString("John Doe (AnyWare Corp.)");
+  moduleContributors << QString("Jean-Christophe Fillion-Robin (Kitware)")
+                     << QString("Lucas Gandel (Kitware)");
   return moduleContributors;
 }
 
@@ -83,7 +119,7 @@ QIcon qSlicerMixedRealityModule::icon() const
 //-----------------------------------------------------------------------------
 QStringList qSlicerMixedRealityModule::categories() const
 {
-  return QStringList() << "Examples";
+  return QStringList() << "Mixed Reality";
 }
 
 //-----------------------------------------------------------------------------
@@ -93,9 +129,50 @@ QStringList qSlicerMixedRealityModule::dependencies() const
 }
 
 //-----------------------------------------------------------------------------
+qMRMLMixedRealityView* qSlicerMixedRealityModule::viewWidget()
+{
+  Q_D(qSlicerMixedRealityModule);
+  return d->MixedRealityViewWidget;
+}
+
+//-----------------------------------------------------------------------------
+void qSlicerMixedRealityModule::setMRMLScene(vtkMRMLScene* scene)
+{
+  this->Superclass::setMRMLScene(scene);
+
+  vtkSlicerMixedRealityLogic* logic = vtkSlicerMixedRealityLogic::SafeDownCast(this->logic());
+  if (!logic)
+  {
+    qCritical() << Q_FUNC_INFO << " failed: logic is invalid";
+    return;
+  }
+
+  vtkMRMLMixedRealityViewNode* defaultViewNode = logic->GetDefaultMixedRealityViewNode();
+  if (!defaultViewNode)
+  {
+    qCritical() << Q_FUNC_INFO << " failed: defaultViewNode is invalid";
+    return;
+  }
+//  QSettings settings;
+//  settings.beginGroup("Default3DView");
+//  if (settings.contains("UseDepthPeeling"))
+//  {
+//    defaultViewNode->SetUseDepthPeeling(settings.value("UseDepthPeeling").toBool());
+//  }
+}
+
+//-----------------------------------------------------------------------------
 void qSlicerMixedRealityModule::setup()
 {
+  Q_D(qSlicerMixedRealityModule);
   this->Superclass::setup();
+
+  d->addViewWidget();
+
+  vtkSlicerMixedRealityLogic* xrLogic = vtkSlicerMixedRealityLogic::SafeDownCast(this->logic());
+
+  // If mixed reality logic is modified it indicates that the view node may changed
+  qvtkConnect(xrLogic, vtkCommand::ModifiedEvent, this, SLOT(onViewNodeModified()));
 }
 
 //-----------------------------------------------------------------------------
