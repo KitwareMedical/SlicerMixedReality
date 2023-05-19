@@ -19,6 +19,9 @@
 // Qt includes
 #include <QDebug>
 
+// Slicer includes
+#include <qSlicerCoreApplication.h>
+
 // MixedReality Logic includes
 #include <vtkSlicerMixedRealityLogic.h>
 
@@ -72,6 +75,38 @@ void qSlicerMixedRealityModulePrivate::addViewWidget()
 
   this->MixedRealityViewWidget = new qMRMLMixedRealityView();
   this->MixedRealityViewWidget->setObjectName(QString("MixedRealityViewWidget"));
+
+  if(q->isInstalled())
+  {
+    QString actionManifestPath = qSlicerCoreApplication::application()->extensionsInstallPath()  + "/bin";
+    this->MixedRealityViewWidget->setActionManifestPath(actionManifestPath);
+  }
+  else
+  {
+    // Since the output of qSlicerAbstractCoreModule::path() is
+    //
+    //   <module-lib-dir>/qt-loadable-modules[/(Release|Debug|...)]
+    //
+    // where
+    //
+    //   <module-lib-dir> is equivalent to <extension-build-dir>/inner-build/lib/Slicer-X.Y
+    //
+    // and the action manifest files are in this directory
+    //
+    //   <extension-build-dir>/vtkRenderingOpenVR-build/externals/vtkRenderingOpenXR/
+    //
+    // we compose the path as such:
+
+    // First, we retrieve <module-lib-dir>
+    std::string moduleLibDirectory = vtkSlicerApplicationLogic::GetModuleSlicerXYLibDirectory(q->path().toStdString());
+
+    // ... then we change the directory to vtkRenderingOpenXR-build
+    QString actionManifestPath = QString::fromStdString(moduleLibDirectory + "/../../../vtkRenderingOpenXR-build/externals/vtkRenderingOpenXR");
+
+    this->MixedRealityViewWidget->setActionManifestPath(actionManifestPath);
+  }
+
+  qDebug() << "actionManifestPath:" << this->MixedRealityViewWidget->actionManifestPath();
 }
 
 //-----------------------------------------------------------------------------

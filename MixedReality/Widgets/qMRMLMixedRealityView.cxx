@@ -116,6 +116,10 @@ CTK_GET_CPP(qMRMLMixedRealityView, vtkOpenXRRemotingRenderWindow*, renderWindow,
 //----------------------------------------------------------------------------
 CTK_GET_CPP(qMRMLMixedRealityView, vtkOpenXRRenderWindowInteractor*, interactor, Interactor);
 
+//------------------------------------------------------------------------------
+CTK_SET_CPP(qMRMLMixedRealityView, const QString&, setActionManifestPath, ActionManifestPath);
+CTK_GET_CPP(qMRMLMixedRealityView, QString, actionManifestPath, ActionManifestPath);
+
 //---------------------------------------------------------------------------
 void qMRMLMixedRealityViewPrivate::createRenderWindow()
 {
@@ -138,6 +142,7 @@ void qMRMLMixedRealityViewPrivate::createRenderWindow()
 //  this->Renderer = vtkSmartPointer<vtkOpenVRRenderer>::New();
 //  this->Interactor = vtkSmartPointer<vtkMixedRealityViewInteractor>::New();
   this->Interactor = vtkSmartPointer<vtkOpenXRRenderWindowInteractor>::New(); //TODO: For debugging the original interactor
+  this->Interactor->SetActionManifestDirectory(q->actionManifestPath().toStdString());
 //  this->InteractorStyle = vtkSmartPointer<vtkMixedRealityViewInteractorStyle>::New();
   //this->InteractorStyle = vtkSmartPointer<vtkOpenVRInteractorStyle>::New(); //TODO: For debugging the original interactor
 //  this->Interactor->SetInteractorStyle(this->InteractorStyle);
