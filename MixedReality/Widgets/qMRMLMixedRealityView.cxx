@@ -100,7 +100,7 @@ qMRMLMixedRealityViewPrivate::~qMRMLMixedRealityViewPrivate() = default;
 //---------------------------------------------------------------------------
 void qMRMLMixedRealityViewPrivate::init()
 {
-//  QObject::connect(&this->MixedRealityLoopTimer, SIGNAL(timeout()), this, SLOT(doOpenMixedReality()));
+  QObject::connect(&this->MixedRealityLoopTimer, SIGNAL(timeout()), this, SLOT(doOpenMixedReality()));
 }
 
 //----------------------------------------------------------------------------
@@ -382,7 +382,7 @@ void qMRMLMixedRealityViewPrivate::updateWidgetFromMRML()
 
 //  if (this->MRMLMixedRealityViewNode->GetActive())
 //  {
-//    this->MixedRealityLoopTimer.start(0);
+    this->MixedRealityLoopTimer.start(0);
 //  }
 //  else
 //  {
@@ -413,12 +413,12 @@ void qMRMLMixedRealityViewPrivate::updateWidgetFromMRML()
 //  return 0.0001;
 //}
 
-// --------------------------------------------------------------------------
-//void qMRMLMixedRealityViewPrivate::doOpenMixedReality()
-//{
-//  if (this->Interactor && this->RenderWindow && this->RenderWindow->GetHMD() && this->Renderer)
-//  {
-//    this->Interactor->DoOneEvent(this->RenderWindow, this->Renderer);
+//--------------------------------------------------------------------------
+void qMRMLMixedRealityViewPrivate::doOpenMixedReality()
+{
+  if (this->Interactor && this->RenderWindow /*&& this->RenderWindow->GetHMD()*/ && this->Renderer)
+  {
+    this->Interactor->DoOneEvent(this->RenderWindow, this->Renderer);
 
 //    this->LastViewUpdateTime->StopTimer();
 //    if (this->LastViewUpdateTime->GetElapsedTime() > 0.0)
@@ -486,8 +486,8 @@ void qMRMLMixedRealityViewPrivate::updateWidgetFromMRML()
 
 //      this->LastViewUpdateTime->StartTimer();
 //    }
-//  }
-//}
+  }
+}
 
 // --------------------------------------------------------------------------
 //void qMRMLMixedRealityViewPrivate::updateTransformNodeWithControllerPose(vtkEventDataDevice device)

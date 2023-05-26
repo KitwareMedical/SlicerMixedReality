@@ -79,7 +79,7 @@ public:
 
 public slots:
   void updateWidgetFromMRML();
-//  void doOpenMixedReality();
+  void doOpenMixedReality();
 
 protected:
 //  void updateTransformNodeWithControllerPose(vtkEventDataDevice device);
