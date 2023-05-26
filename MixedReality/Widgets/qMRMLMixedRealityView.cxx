@@ -139,9 +139,8 @@ void qMRMLMixedRealityViewPrivate::createRenderWindow()
 //  this->LastViewPosition[0] = 0.0;
 //  this->LastViewPosition[1] = 0.0;
 //  this->LastViewPosition[2] = 0.0;
-
-//  this->RenderWindow = vtkSmartPointer<vtkOpenVRRenderWindow>::New();
-//  this->Renderer = vtkSmartPointer<vtkOpenVRRenderer>::New();
+  this->RenderWindow = vtkSmartPointer<vtkOpenXRRemotingRenderWindow>::New();
+  this->Renderer = vtkSmartPointer<vtkOpenXRRenderer>::New();
 //  this->Interactor = vtkSmartPointer<vtkMixedRealityViewInteractor>::New();
   this->Interactor = vtkSmartPointer<vtkOpenXRRenderWindowInteractor>::New(); //TODO: For debugging the original interactor
   this->Interactor->SetActionManifestDirectory(q->actionManifestPath().toStdString());
@@ -154,7 +153,7 @@ void qMRMLMixedRealityViewPrivate::createRenderWindow()
   this->Renderer->SetActiveCamera(this->Camera);
 
 //  this->RenderWindow->SetMultiSamples(0);
-//  this->RenderWindow->AddRenderer(this->Renderer);
+  this->RenderWindow->AddRenderer(this->Renderer);
   this->RenderWindow->SetInteractor(this->Interactor);
 
   this->RenderWindow->SetRemotingIPAddress(q->mrmlMixedRealityViewNode()->GetPlayerIPAddress().c_str());
