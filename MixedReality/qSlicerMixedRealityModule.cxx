@@ -103,7 +103,7 @@ void qSlicerMixedRealityModulePrivate::addViewWidget()
     std::string moduleLibDirectory = vtkSlicerApplicationLogic::GetModuleSlicerXYLibDirectory(q->path().toStdString());
 
     // ... then we change the directory to vtkRenderingOpenXR-build
-    QString actionManifestPath = QString::fromStdString(moduleLibDirectory + "/../../../vtkRenderingOpenXR-build/externals/vtkRenderingOpenXR");
+    QString actionManifestPath = QString::fromStdString(moduleLibDirectory + "/../../../vtkRenderingOpenXR-build/externals/vtkRenderingOpenXR/");
 
     this->MixedRealityViewWidget->setActionManifestPath(actionManifestPath);
   }
