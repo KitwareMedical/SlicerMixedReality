@@ -86,7 +86,7 @@ if((NOT OpenXR_INCLUDE_DIR OR NOT OpenXR_LIBRARY)
 
   # library paths
   set(${proj}_LIBRARY_PATHS_LAUNCHER_BUILD
-    ${EP_BINARY_DIR}/src/loader
+    ${EP_BINARY_DIR}/src/loader/<CMAKE_CFG_INTDIR>
     )
   mark_as_superbuild(
     VARS ${proj}_LIBRARY_PATHS_LAUNCHER_BUILD
