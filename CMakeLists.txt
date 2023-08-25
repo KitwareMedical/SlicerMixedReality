@@ -64,7 +64,7 @@ foreach(file IN LISTS OpenXRRemoting_FILES)
     )
   # Install
   install(FILES ${OpenXRRemoting_BIN_DIR}/${file}
-    DESTINATION ${Slicer_INSTALL_THIRDPARTY_BIN_DIR}
+    DESTINATION ${Slicer_INSTALL_THIRDPARTY_LIB_DIR}
     COMPONENT RuntimeLibraries
     )
 endforeach()
