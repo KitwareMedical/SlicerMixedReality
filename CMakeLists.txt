@@ -40,6 +40,36 @@ add_subdirectory(MixedReality)
 ## NEXT_MODULE
 
 #-----------------------------------------------------------------------------
+# Install OpenXRRemoting
+#
+# RemotingXR.json and companion files are copied or installed along side the
+# vtkRenderingRemotingOpenXR library so that "vtkOpenXRManagerRemoteConnection::Initialize()"
+# can locate the files and set the XR_RUNTIME_JSON env. variable
+set(OpenXRRemoting_FILES )
+if(WIN32)
+  set(OpenXRRemoting_FILES
+    Microsoft.Holographic.AppRemoting.OpenXr.dll
+    Microsoft.Holographic.AppRemoting.OpenXr.SU.dll
+    PerceptionDevice.dll
+    RemotingXR.json
+    )
+endif()
+set(_dest ${CMAKE_BINARY_DIR}/${Slicer_THIRDPARTY_BIN_DIR})
+foreach(file IN LISTS OpenXRRemoting_FILES)
+  # Copy
+  message(STATUS "Copying ${file} to ${_dest}")
+  file(COPY ${OpenXRRemoting_BIN_DIR}/${file}
+    DESTINATION ${_dest}
+    USE_SOURCE_PERMISSIONS
+    )
+  # Install
+  install(FILES ${OpenXRRemoting_BIN_DIR}/${file}
+    DESTINATION ${Slicer_INSTALL_THIRDPARTY_BIN_DIR}
+    COMPONENT RuntimeLibraries
+    )
+endforeach()
+
+#-----------------------------------------------------------------------------
 set(EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS)
 list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${vtkRenderingVR_DIR};vtkRenderingVR;runtime;/")
 list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${vtkRenderingOpenXR_DIR};vtkRenderingOpenXR;runtime;/")
