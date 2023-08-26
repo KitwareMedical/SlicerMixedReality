@@ -40,6 +40,15 @@ add_subdirectory(MixedReality)
 ## NEXT_MODULE
 
 #-----------------------------------------------------------------------------
+set(SlicerMixedReality_CUSTOM_CONFIG "####### Expanded from \@SlicerVirtualReality_CUSTOM_CONFIG\@ #######
+if(WIN32)
+  set(vtkRenderingOpenXRRemoting_DIR \"${vtkRenderingOpenXRRemoting_DIR}\")
+  find_package(vtkRenderingOpenXRRemoting REQUIRED)
+endif()
+##################################################
+")
+
+#-----------------------------------------------------------------------------
 # Install OpenXRRemoting
 #
 # RemotingXR.json and companion files are copied or installed along side the
