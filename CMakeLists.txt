@@ -49,6 +49,27 @@ endif()
 ")
 
 #-----------------------------------------------------------------------------
+# Install OpenXR
+#
+if(WIN32)
+  # ${OpenXR_LIBRARY} contains import library which does not have to be installed.
+  # Instead, the dll must be added to the package.
+  set(_library "${OpenXR-SDK_LIBRARY_PATHS_LAUNCHER_BUILD}/openxr_loader.dll")
+  # Since the launcher settings include the placeholder <CMAKE_CFG_INTDIR>, let's
+  # replace if with the corresponding generator expression.
+  string(REPLACE "<CMAKE_CFG_INTDIR>" "$<CONFIG>" _library ${_library})
+  install(
+    CODE "file(INSTALL \"${_library}\" DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${Slicer_INSTALL_THIRDPARTY_LIB_DIR}\")"
+    COMPONENT RuntimeLibraries
+    )
+else()
+  install(FILES ${OpenXR_LIBRARY}
+    DESTINATION ${Slicer_INSTALL_THIRDPARTY_LIB_DIR}
+    COMPONENT RuntimeLibraries
+    )
+endif()
+
+#-----------------------------------------------------------------------------
 # Install OpenXRRemoting
 #
 # RemotingXR.json and companion files are copied or installed along side the
