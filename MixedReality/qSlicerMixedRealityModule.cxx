@@ -78,9 +78,12 @@ void qSlicerMixedRealityModulePrivate::addViewWidget()
   this->MixedRealityViewWidget = new qMRMLMixedRealityView();
   this->MixedRealityViewWidget->setObjectName(QString("MixedRealityViewWidget"));
 
-  if(q->isInstalled())
+  if (q->isInstalled())
   {
-    QString actionManifestPath = qSlicerCoreApplication::application()->extensionsInstallPath()  + "/bin";
+    // "xr_actions" sub-directory is hard-coded in "VTK/Rendering/OpenXR/CMakeLists.txt"
+    // "Slicer_THIRDPARTY_LIB_DIR" is set in "External_vtkRenderingOpenXR.cmake"
+    QString actionManifestPath = QString("%1/SlicerMixedReality/%2/xr_actions/").arg(
+      qSlicerCoreApplication::application()->extensionsInstallPath(), Slicer_THIRDPARTY_LIB_DIR);
     this->MixedRealityViewWidget->setActionManifestPath(actionManifestPath);
   }
   else
@@ -95,15 +98,15 @@ void qSlicerMixedRealityModulePrivate::addViewWidget()
     //
     // and the action manifest files are in this directory
     //
-    //   <extension-build-dir>/vtkRenderingOpenVR-build/externals/vtkRenderingOpenXR/
+    //   <extension-build-dir>/vtkRenderingOpenXR-build/vtkRenderingOpenXR/
     //
     // we compose the path as such:
 
     // First, we retrieve <module-lib-dir>
     std::string moduleLibDirectory = vtkSlicerApplicationLogic::GetModuleSlicerXYLibDirectory(q->path().toStdString());
 
-    // ... then we change the directory to vtkRenderingOpenXR-build
-    QString actionManifestPath = QString::fromStdString(moduleLibDirectory + "/../../../vtkRenderingOpenXR-build/externals/vtkRenderingOpenXR/");
+    // ... then we change the directory to vtkRenderingOpenXR-build/vtkRenderingOpenXR/
+    QString actionManifestPath = QString::fromStdString(moduleLibDirectory + "/../../../vtkRenderingOpenXR-build/vtkRenderingOpenXR/");
 
     this->MixedRealityViewWidget->setActionManifestPath(actionManifestPath);
   }
