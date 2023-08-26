@@ -71,13 +71,21 @@ endforeach()
 
 #-----------------------------------------------------------------------------
 set(EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS)
+
+# vtkRenderingVR, vtkRenderingOpenXR
 list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${vtkRenderingVR_DIR};vtkRenderingVR;runtime;/")
 list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${vtkRenderingOpenXR_DIR};vtkRenderingOpenXR;runtime;/")
-list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${vtkRenderingOpenXRRemoting_DIR};vtkRenderingOpenXRRemoting;runtime;/")
 if(Slicer_USE_PYTHONQT)
   list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${vtkRenderingVR_DIR};vtkRenderingVR;python;/")
   list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${vtkRenderingOpenXR_DIR};vtkRenderingOpenXR;python;/")
-  list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${vtkRenderingOpenXRRemoting_DIR};vtkRenderingOpenXRRemoting;python;/")
+endif()
+
+# vtkRenderingOpenXRRemoting
+if(WIN32)
+  list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${vtkRenderingOpenXRRemoting_DIR};vtkRenderingOpenXRRemoting;runtime;/")
+  if(Slicer_USE_PYTHONQT)
+    list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${vtkRenderingOpenXRRemoting_DIR};vtkRenderingOpenXRRemoting;python;/")
+  endif()
 endif()
 set(${EXTENSION_NAME}_CPACK_INSTALL_CMAKE_PROJECTS "${EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS}" CACHE STRING "List of external projects to install" FORCE)
 
