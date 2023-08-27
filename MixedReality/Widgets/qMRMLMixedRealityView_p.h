@@ -54,8 +54,8 @@ class vtkObject;;
 class vtkOpenXRRemotingRenderWindow;
 class vtkOpenXRRenderWindowInteractor;
 class vtkTimerLog;
-//class vtkMixedRealityViewInteractor;
-//class vtkMixedRealityViewInteractorStyle;
+class vtkMixedRealityViewInteractor;
+class vtkMixedRealityViewInteractorStyle;
 
 //-----------------------------------------------------------------------------
 class qMRMLMixedRealityViewPrivate: public QObject
@@ -95,9 +95,9 @@ protected:
   vtkWeakPointer<vtkMRMLMixedRealityViewNode> MRMLMixedRealityViewNode;
   vtkSmartPointer<vtkOpenXRRenderer> Renderer;
   vtkSmartPointer<vtkOpenXRRemotingRenderWindow> RenderWindow;
-  vtkSmartPointer<vtkOpenXRRenderWindowInteractor> Interactor;
+  vtkSmartPointer<vtkMixedRealityViewInteractor> Interactor;
   //vtkSmartPointer<vtkOpenVRRenderWindowInteractor> Interactor; //TODO: For debugging the original interactor
-//  vtkSmartPointer<vtkMixedRealityViewInteractorStyle> InteractorStyle;
+  vtkSmartPointer<vtkMixedRealityViewInteractorStyle> InteractorStyle;
   //vtkSmartPointer<vtkOpenVRInteractorStyle> InteractorStyle; //TODO: For debugging the original interactor
   vtkSmartPointer<vtkOpenXRCamera> Camera;
 //  vtkSmartPointer<vtkLightCollection> Lights;

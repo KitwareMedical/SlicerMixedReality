@@ -3,6 +3,9 @@ project(vtkSlicer${MODULE_NAME}ModuleMRML)
 set(KIT ${PROJECT_NAME})
 
 #-----------------------------------------------------------------------------
+find_package(vtkRenderingOpenXR REQUIRED)
+
+#-----------------------------------------------------------------------------
 set(${KIT}_EXPORT_DIRECTIVE "VTK_SLICER_${MODULE_NAME_UPPER}_MODULE_MRML_EXPORT")
 
 set(${KIT}_INCLUDE_DIRECTORIES
@@ -16,11 +19,16 @@ set(${KIT}_SRCS
   vtkMRML${MODULE_NAME}ViewNode.h
 #  vtkMRML${MODULE_NAME}LayoutNode.cxx
 #  vtkMRML${MODULE_NAME}LayoutNode.h
+  vtk${MODULE_NAME}ViewInteractor.cxx
+  vtk${MODULE_NAME}ViewInteractor.h
+  vtk${MODULE_NAME}ViewInteractorStyle.cxx
+  vtk${MODULE_NAME}ViewInteractorStyle.h
   )
 
 set(${KIT}_TARGET_LIBRARIES
   ${VTK_LIBRARIES}
   ${MRML_LIBRARIES}
+  VTK::RenderingOpenXR
   )
 
 #-----------------------------------------------------------------------------

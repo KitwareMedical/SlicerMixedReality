@@ -18,10 +18,10 @@
 
 // Need to be included before qMRMLVRView_p
 #include <vtkOpenXRCamera.h>
-//#include <vtkMixedRealityViewInteractorStyle.h>
-//#include <vtkOpenVRInteractorStyle.h> //TODO: For debugging the original interactor
-#include <vtkOpenXRRenderWindowInteractor.h>
-//#include <vtkOpenVRRenderWindowInteractor.h> //TODO: For debugging the original interactor
+#include "vtkMixedRealityViewInteractorStyle.h"
+//#include <vtkOpenXRInteractorStyle.h> //TODO: For debugging the original interactor
+#include "vtkMixedRealityViewInteractor.h"
+#include <vtkOpenXRRenderWindowInteractor.h> //TODO: For debugging the original interactor
 //#include <vtkOpenVRModel.h>
 #include <vtkOpenXRRemotingRenderWindow.h>
 #include <vtkOpenXRRenderer.h>
@@ -141,14 +141,14 @@ void qMRMLMixedRealityViewPrivate::createRenderWindow()
 //  this->LastViewPosition[2] = 0.0;
   this->RenderWindow = vtkSmartPointer<vtkOpenXRRemotingRenderWindow>::New();
   this->Renderer = vtkSmartPointer<vtkOpenXRRenderer>::New();
-//  this->Interactor = vtkSmartPointer<vtkMixedRealityViewInteractor>::New();
-  this->Interactor = vtkSmartPointer<vtkOpenXRRenderWindowInteractor>::New(); //TODO: For debugging the original interactor
+  this->Interactor = vtkSmartPointer<vtkMixedRealityViewInteractor>::New();
+//  this->Interactor = vtkSmartPointer<vtkOpenXRRenderWindowInteractor>::New(); //TODO: For debugging the original interactor
   this->Interactor->SetActionManifestDirectory(q->actionManifestPath().toStdString());
-//  this->InteractorStyle = vtkSmartPointer<vtkMixedRealityViewInteractorStyle>::New();
+  this->InteractorStyle = vtkSmartPointer<vtkMixedRealityViewInteractorStyle>::New();
   //this->InteractorStyle = vtkSmartPointer<vtkOpenVRInteractorStyle>::New(); //TODO: For debugging the original interactor
-//  this->Interactor->SetInteractorStyle(this->InteractorStyle);
-//  this->InteractorStyle->SetInteractor(this->Interactor);
-//  this->InteractorStyle->SetCurrentRenderer(this->Renderer);
+  this->Interactor->SetInteractorStyle(this->InteractorStyle);
+  this->InteractorStyle->SetInteractor(this->Interactor);
+  this->InteractorStyle->SetCurrentRenderer(this->Renderer);
   this->Camera = vtkSmartPointer<vtkOpenXRCamera>::New();
   this->Renderer->SetActiveCamera(this->Camera);
 
@@ -265,7 +265,7 @@ void qMRMLMixedRealityViewPrivate::destroyRenderWindow()
   // be deleted.
   this->Interactor->SetRenderWindow(nullptr);
   this->Interactor = nullptr;
-//  this->InteractorStyle = nullptr;
+  this->InteractorStyle = nullptr;
   this->DisplayableManagerGroup = nullptr;
   this->Renderer = nullptr;
   this->Camera = nullptr;
