@@ -40,7 +40,8 @@ public:
   virtual ~qSlicerMixedRealityModuleWidget();
 
 public slots:
-  void setPlayerIPAddress(const QString& value);
+  void setMixedRealityConnected(bool connect);
+  void setMixedRealityActive(bool activate);
 
 protected slots:
   void updateWidgetFromMRML();

@@ -137,3 +137,33 @@ bool vtkMRMLMixedRealityViewNode::SetAndObserveReferenceViewNode(vtkMRMLViewNode
   this->SetAndObserveReferenceViewNodeID(node->GetID());
   return true;
 }
+
+//----------------------------------------------------------------------------
+bool vtkMRMLMixedRealityViewNode::HasError()
+{
+  return !this->LastErrorMessage.empty();
+}
+
+//----------------------------------------------------------------------------
+void vtkMRMLMixedRealityViewNode::ClearError()
+{
+  this->SetError("");
+}
+
+//----------------------------------------------------------------------------
+void vtkMRMLMixedRealityViewNode::SetError(const std::string& errorText)
+{
+  if (this->LastErrorMessage == errorText)
+  {
+    // no change
+    return;
+  }
+  this->LastErrorMessage = errorText;
+  this->Modified();
+}
+
+//----------------------------------------------------------------------------
+std::string vtkMRMLMixedRealityViewNode::GetError() const
+{
+  return this->LastErrorMessage;
+}
