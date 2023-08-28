@@ -284,10 +284,10 @@ void qMRMLMixedRealityViewPrivate::updateWidgetFromMRML()
     {
       this->destroyRenderWindow();
     }
-//    if (this->MRMLMixedRealityViewNode)
-//    {
-//      this->MRMLMixedRealityViewNode->ClearError();
-//    }
+    if (this->MRMLMixedRealityViewNode)
+    {
+      this->MRMLMixedRealityViewNode->ClearError();
+    }
     return;
   }
 
@@ -296,12 +296,12 @@ void qMRMLMixedRealityViewPrivate::updateWidgetFromMRML()
     QApplication::setOverrideCursor(QCursor(Qt::BusyCursor));
     this->createRenderWindow();
     QApplication::restoreOverrideCursor();
-//    if (!q->isHardwareConnected())
-//    {
-//      this->MRMLMixedRealityViewNode->SetError("Connection failed");
-//      return;
-//    }
-//    this->MRMLMixedRealityViewNode->ClearError();
+    if (!q->isHardwareConnected())
+    {
+      this->MRMLMixedRealityViewNode->SetError("Connection failed");
+      return;
+    }
+    this->MRMLMixedRealityViewNode->ClearError();
   }
 
   if (this->DisplayableManagerGroup->GetMRMLDisplayableNode() != this->MRMLMixedRealityViewNode.GetPointer())
@@ -380,14 +380,14 @@ void qMRMLMixedRealityViewPrivate::updateWidgetFromMRML()
 //    }
 //  }
 
-//  if (this->MRMLMixedRealityViewNode->GetActive())
-//  {
+  if (this->MRMLMixedRealityViewNode->GetActive())
+  {
     this->MixedRealityLoopTimer.start(0);
-//  }
-//  else
-//  {
-//    this->MixedRealityLoopTimer.stop();
-//  }
+  }
+  else
+  {
+    this->MixedRealityLoopTimer.stop();
+  }
 }
 
 //---------------------------------------------------------------------------
@@ -731,20 +731,20 @@ void qMRMLMixedRealityView::getDisplayableManagers(vtkCollection* displayableMan
 }
 
 //------------------------------------------------------------------------------
-//bool qMRMLMixedRealityView::isHardwareConnected()const
-//{
-//  vtkOpenVRRenderWindow* renWin = this->renderWindow();
-//  if (!renWin)
-//  {
-//    return false;
-//  }
+bool qMRMLMixedRealityView::isHardwareConnected()const
+{
+  vtkOpenXRRenderWindow* renWin = this->renderWindow();
+  if (!renWin)
+  {
+    return false;
+  }
 //  if (!renWin->GetHMD())
 //  {
 //    return false;
 //  }
-//  // connected successfully
-//  return true;
-//}
+  // connected successfully
+  return true;
+}
 
 //------------------------------------------------------------------------------
 //void qMRMLMixedRealityView::setGrabObjectsEnabled(bool enable)

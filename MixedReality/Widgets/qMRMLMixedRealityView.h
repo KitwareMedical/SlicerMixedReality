@@ -96,7 +96,7 @@ public:
 //  Q_INVOKABLE void updateViewFromReferenceViewCamera();
 
   /// Get underlying RenderWindow
-//  Q_INVOKABLE bool isHardwareConnected()const;
+  Q_INVOKABLE bool isHardwareConnected()const;
 
   /// Enable/disable grabbing and moving objects in the scene
 //  Q_INVOKABLE void setGrabObjectsEnabled(bool enable);

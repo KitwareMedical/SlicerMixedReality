@@ -305,7 +305,7 @@ void vtkSlicerMixedRealityLogic::SetMixedRealityActive(bool activate)
   {
     if (this->GetMixedRealityConnected()
         && this->GetMixedRealityViewNode()
-        /* && this->GetMixedRealityViewNode()->HasError() */)
+        && this->GetMixedRealityViewNode()->HasError())
     {
       // If it is connected already but there is an error then disconnect first then reconnect
       // as the error may be resolved by reconnecting.

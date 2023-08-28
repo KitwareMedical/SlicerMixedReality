@@ -75,6 +75,18 @@ public:
   vtkSetMacro(PlayerIPAddress, const std::string);
   vtkGetMacro(PlayerIPAddress, std::string);
 
+  /// Return true if an error has occurred.
+  bool HasError();
+
+  /// Clear error state.
+  void ClearError();
+
+  /// Set error message. Non-empty string means that an error has occurred.
+  void SetError(const std::string& errorText);
+
+  /// Get error message. Non-empty string means that an error has occurred.
+  std::string GetError() const;
+
 protected:
   vtkMRMLMixedRealityViewNode();
   ~vtkMRMLMixedRealityViewNode() override;
@@ -82,6 +94,8 @@ protected:
   void operator=(const vtkMRMLMixedRealityViewNode&);
 
   std::string PlayerIPAddress;
+
+  std::string LastErrorMessage;
 
   static const char* ReferenceViewNodeReferenceRole;
 };
