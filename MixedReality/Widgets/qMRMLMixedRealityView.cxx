@@ -186,11 +186,11 @@ void qMRMLMixedRealityViewPrivate::createRenderWindow()
       //<< "vtkMRMLOrientationMarkerDisplayableManager" // Not supported in VR
       //<< "vtkMRMLRulerDisplayableManager" // Not supported in VR
       //<< "vtkMRMLAnnotationDisplayableManager" // Not supported in VR
-      //<< "vtkMRMLMarkupsDisplayableManager"
+      << "vtkMRMLMarkupsDisplayableManager"
       //<< "vtkMRMLSegmentationsDisplayableManager3D"
-      //<< "vtkMRMLTransformsDisplayableManager3D"
-      //<< "vtkMRMLLinearTransformsDisplayableManager3D"
-      //<< "vtkMRMLVolumeRenderingDisplayableManager"
+      << "vtkMRMLTransformsDisplayableManager3D"
+      << "vtkMRMLLinearTransformsDisplayableManager3D"
+      << "vtkMRMLVolumeRenderingDisplayableManager"
       ;
   foreach (const QString& displayableManager, displayableManagers)
   {
